@@ -1,9 +1,11 @@
 #include "main.h"
-#include "restaurant.cpp"
+#include "AVL/AVLTree.hpp"
+#include "Queue/QueueFIFO.hpp"
+#include "Queue/QueueLRCO.hpp"
 
-int main(int argc, char* argv[]) {
-    string fileName = "test.txt";
-    simulate(fileName);
-
+int main()
+{
+    /* std::string fileName = "test.txt"; */
+    /* simulate(fileName); */
     return 0;
 }

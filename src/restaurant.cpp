@@ -1,6 +1,12 @@
+#ifndef RESTAURANT_CPP
+#define RESTAURANT_CPP
+
 #include "main.h"
 
-void simulate(string filename)
+void simulate(std::string filename)
 {
-	return;
+    (void) filename;
+    return;
 }
+
+#endif
