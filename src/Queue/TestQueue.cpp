@@ -138,3 +138,56 @@ void TestQueue::Heap::test()
     testRemove();
     testRandom();
 }
+
+void TestQueue::QueueLFCO::testDistinctElement()
+{
+    WrappedQueuLFCOForTest<int, std::less<>> testObject;
+    for (int i = 0; i < 10; i++)
+        testObject.push(i);
+
+    assert(testObject.peek() == 0);
+
+    testObject.pop();
+    assert(!testObject.contains(0));
+
+    testObject.remove(5);
+    assert(!testObject.contains(5));
+}
+
+void TestQueue::QueueLFCO::testAllEquivElement()
+{
+    WrappedQueuLFCOForTest<int, std::less<>> testObject;
+    for (int i = 0; i < 10; i++)
+        testObject.push(0);
+
+    assert(testObject.peek() == 0);
+
+    testObject.pop();
+    assert(testObject.contains(0));
+
+    testObject.pop();
+    assert(testObject.contains(0));
+}
+
+void TestQueue::QueueLFCO::testResetCounter()
+{
+    WrappedQueuLFCOForTest<int, std::less<>> testObject;
+    for (int i = 0; i < 10; i++)
+        testObject.push(0);
+
+    testObject.printValue();
+    testObject.clear();
+
+    for (int i = 0; i < 10; i++)
+        testObject.push(0);
+
+    testObject.printValue();
+    testObject.clear();
+}
+
+void TestQueue::QueueLFCO::test()
+{
+    testDistinctElement();
+    testAllEquivElement();
+    testResetCounter();
+}

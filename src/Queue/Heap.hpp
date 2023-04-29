@@ -6,11 +6,6 @@
 #include <iterator>
 #include <vector>
 
-// NOTE:
-// Heap is intended to be used as LFCO queue, by inheriting Heap and providing a Compare function
-// object, so requirement of LFCO queue will effect some choice in Heap implementation. Most notably
-// the selection of element of swap if both child is equivalent.
-
 template <typename T, typename Compare>
 class Heap
 {

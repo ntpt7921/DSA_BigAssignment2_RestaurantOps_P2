@@ -2,6 +2,7 @@
 #define QUEUE_TESTQUEUE_HPP
 
 #include "Queue/Heap.hpp"
+#include "QueueLFCO.hpp"
 #include <algorithm>
 #include <cassert>
 #include <iostream>
@@ -79,6 +80,38 @@ void testRandom();
 void test();
 
 };  // namespace Heap
+
+namespace QueueLFCO
+{
+
+template <typename T, typename Compare>
+class WrappedQueuLFCOForTest : public ::QueueLFCO<T, Compare>
+{
+public:
+    void printValue();
+};
+
+template <typename T1, typename T2>
+std::ostream &operator<<(std::ostream &out, const std::pair<T1, T2> &p)
+{
+    out << '(' << p.first << ',' << p.second << ')';
+    return out;
+}
+
+template <typename T, typename Compare>
+void TestQueue::QueueLFCO::WrappedQueuLFCOForTest<T, Compare>::printValue()
+{
+    for (const auto &value : this->arr)
+        std::cout << value << ' ';
+    std::cout << std::endl;
+}
+
+void testDistinctElement();
+void testAllEquivElement();
+void testResetCounter();
+void test();
+
+};  // namespace QueueLFCO
 
 };  // namespace TestQueue
 
