@@ -1,4 +1,4 @@
-#include "AVLTest.hpp"
+#include "AVL/TestAVL.hpp"
 #include <algorithm>
 #include <iostream>
 #include <random>
