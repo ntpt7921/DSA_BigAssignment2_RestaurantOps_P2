@@ -100,10 +100,15 @@ void Heap<T, Compare>::remove(const T &item)
 
     if (foundAt != arr.end())
     {
-        // put last elem at the need-to-be-removed position, then reheapDown
+        // put last elem at the need-to-be-removed position,
+        // then reheapDown or reheapUp depends on value
+        T toRemove = *foundAt;
         *foundAt = arr.back();
         arr.pop_back();
-        reheapDown(foundAt);
+        if (comp(*foundAt, toRemove))
+            reheapDown(foundAt);
+        else
+            reheapUp(foundAt);
     }
 }
 

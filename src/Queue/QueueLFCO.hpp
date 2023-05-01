@@ -32,7 +32,7 @@ struct CompareWithOrderFallback
 // NOTE:
 // Implement the required LFCO queue with insert order used as fallback comparison criteria when
 // normal values of type T is equivalent. Each element will carry a unique insert order value,
-// ensuring of total ordering within the queue.
+// ensuring of no element is equivalent to others within the queue
 template <typename T, typename Compare>
 class QueueLFCO
     : public Heap<std::pair<_QueueLFCOInsertOrder, T>, CompareWithOrderFallback<T, Compare>>
