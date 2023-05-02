@@ -1,0 +1,26 @@
+this
+is
+wrong
+command
+
+ 
+asdf 123
+asdf asdf
+REG
+REG 
+REG 1234
+REG asdf1234
+REG asdf1234 
+REG  asdf1234 
+CLE
+CLE 
+CLE asdf
+CLE 4asdf1234
+CLE 234a 
+CLE  1234 
+PrintHT 
+PrintHT asdf1234
+PrintAVL 
+PrintAVL 1234
+PrintMH 
+PrintMH asdf asdf 

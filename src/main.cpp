@@ -6,16 +6,15 @@
 #include "Queue/QueueLFCO.hpp"
 #include "Queue/QueueLRCO.hpp"
 
-#include "HuffmanCoding/TestHuffmanCoding.hpp"
+#include "CommandParser/TestCommandParser.hpp"
 
-int main()
+int main(int argc, char *argv[])
 {
     /* std::string fileName = "test.txt"; */
     /* simulate(fileName); */
 
-    TestHuffmanCoding::Heap::test();
-    TestHuffmanCoding::HuffTree::test();
-    TestHuffmanCoding::HuffmanTreeWrapper::test();
+    for (int i = 1; i < argc; i++)
+        TestCommandParser::testWithFile(std::string(argv[i]));
 
     return 0;
 }
