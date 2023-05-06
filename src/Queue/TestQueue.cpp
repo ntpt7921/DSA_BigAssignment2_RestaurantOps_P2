@@ -5,6 +5,7 @@
 #include <functional>
 #include <iostream>
 #include <random>
+#include <vector>
 
 void TestQueue::QueueLRCO::test()
 {
@@ -137,6 +138,19 @@ void TestQueue::Heap::test()
     testPop0_7();
     testRemove();
     testRandom();
+}
+
+void TestQueue::QueueLFCO::testVectorElemListConstructor()
+{
+    std::vector<int> valueList({0, 1, 2, 3, 4, 5, 6, 6, 7, 8, 9});
+
+    WrappedQueuLFCOForTest<int, std::less<>> testObject1;
+    for (int i = 0; i < 10; i++)
+        testObject1.push(i);
+    WrappedQueuLFCOForTest<int, std::less<>> testObject2(valueList);
+
+    testObject1.printValue();
+    testObject2.printValue();
 }
 
 void TestQueue::QueueLFCO::testDistinctElement()

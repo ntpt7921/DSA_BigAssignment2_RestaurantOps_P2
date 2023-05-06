@@ -47,12 +47,12 @@ void TestHuffmanCoding::HuffTree::testMemoryLeakageOneLeafNode()
 void TestHuffmanCoding::HuffTree::testMemoryLeakage()
 {
     constexpr int NUM_TREE = 15;
-    ::HuffTree<char> *newTreeArr[NUM_TREE];
+    std::vector<::HuffTree<char> *> newTreeArr(NUM_TREE);
 
     for (int i = 0; i < NUM_TREE; i++)
         newTreeArr[i] = new ::HuffTree<char>('a' + i, 1 + i);
 
-    auto resultTree = buildHuff(newTreeArr, NUM_TREE);
+    auto resultTree = buildHuff(newTreeArr);
 
     assert(resultTree->weight() == (NUM_TREE) * (NUM_TREE + 1) / 2);
     delete resultTree;
@@ -86,6 +86,24 @@ void TestHuffmanCoding::HuffmanTreeWrapper::testSamplePattern()
     assert(encodedMuck == "111111001110111101");
 }
 
+void TestHuffmanCoding::HuffmanTreeWrapper::testSamplePatternProvided()
+{
+    std::vector<std::pair<char, std::size_t>> elemLists = {
+        {'J', 1}, {'o', 1}, {'n', 1}, {'u', 1}, {'g', 1}, {'i', 2}, {'s', 2},
+        {'d', 2}, {'b', 3}, {'a', 3}, {'j', 3}, {'h', 4}, {'f', 4}};
+    ::HuffmanTreeWrapper<char> testObject(elemLists);
+
+    // example from within the book
+    std::string testString = "Johnuigfifbahjasbdfhjbasdhjf";
+    std::string encodedTestString;
+
+    assert(testObject.getCoding('f') == "100");
+    assert(testObject.getCoding('j') == "010");
+    assert(testObject.getCoding('h') == "101");
+    assert(testObject.getCoding('d') == "0111");
+    assert(testObject.getCoding('s') == "1101");
+}
+
 void TestHuffmanCoding::HuffmanTreeWrapper::testCalculateMultipleTree()
 {
     std::vector<std::pair<char, std::size_t>> elemLists = {
@@ -99,5 +117,6 @@ void TestHuffmanCoding::HuffmanTreeWrapper::testCalculateMultipleTree()
 void TestHuffmanCoding::HuffmanTreeWrapper::test()
 {
     testSamplePattern();
+    testSamplePatternProvided();
     testCalculateMultipleTree();
 }

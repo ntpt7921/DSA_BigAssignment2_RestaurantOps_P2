@@ -24,8 +24,9 @@ void test();
 namespace HuffmanTreeWrapper
 {
 
-void testCalculateMultipleTree();
 void testSamplePattern();
+void testSamplePatternProvided();
+void testCalculateMultipleTree();
 void test();
 
 };  // namespace HuffmanTreeWrapper

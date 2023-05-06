@@ -88,6 +88,8 @@ template <typename T, typename Compare>
 class WrappedQueuLFCOForTest : public ::QueueLFCO<T, Compare>
 {
 public:
+    WrappedQueuLFCOForTest() = default;
+    WrappedQueuLFCOForTest(const std::vector<T> &elemList);
     void printValue();
 };
 
@@ -99,6 +101,13 @@ std::ostream &operator<<(std::ostream &out, const std::pair<T1, T2> &p)
 }
 
 template <typename T, typename Compare>
+TestQueue::QueueLFCO::WrappedQueuLFCOForTest<T, Compare>::WrappedQueuLFCOForTest(
+    const std::vector<T> &elemList)
+    : ::QueueLFCO<T, Compare>(elemList)
+{
+}
+
+template <typename T, typename Compare>
 void TestQueue::QueueLFCO::WrappedQueuLFCOForTest<T, Compare>::printValue()
 {
     for (const auto &value : this->arr)
@@ -106,6 +115,7 @@ void TestQueue::QueueLFCO::WrappedQueuLFCOForTest<T, Compare>::printValue()
     std::cout << std::endl;
 }
 
+void testVectorElemListConstructor();
 void testDistinctElement();
 void testAllEquivElement();
 void testResetCounter();

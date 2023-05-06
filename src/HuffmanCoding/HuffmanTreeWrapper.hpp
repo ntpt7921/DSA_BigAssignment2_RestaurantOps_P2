@@ -80,18 +80,17 @@ void HuffmanTreeWrapper<T>::calculateCoding(
     const std::vector<std::pair<T, std::size_t>> &elemAndFreqs)
 {
     clear();
-    details::HuffTree<T> **treeArr = new details::HuffTree<T> *[elemAndFreqs.size()];
+    std::vector<details::HuffTree<T> *> treeArr(elemAndFreqs.size());
 
     for (std::size_t i = 0; i < elemAndFreqs.size(); i++)
         treeArr[i] = new details::HuffTree<T>(elemAndFreqs[i].first, elemAndFreqs[i].second);
 
-    huffTree = details::buildHuff(treeArr, elemAndFreqs.size());
+    huffTree = details::buildHuff(treeArr);
 
     std::string tempPath;
     traverseTreeAndExtractCoding(huffTree->root(), tempPath);
 
     hasGeneratedCoding = true;
-    delete[] treeArr;
 }
 
 template <typename T>

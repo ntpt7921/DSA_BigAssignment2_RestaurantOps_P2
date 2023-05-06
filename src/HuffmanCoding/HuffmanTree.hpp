@@ -3,6 +3,7 @@
 
 #include "HuffmanCoding/Heap.hpp"
 #include "HuffmanCoding/HuffmanTreeNode.hpp"
+#include "Queue/QueueLFCO.hpp"
 #include <queue>
 
 namespace details
@@ -63,31 +64,47 @@ HuffTree<E>::~HuffTree()
 }
 
 template <typename E>
-struct minTreeComp
+struct CompareTreeByFreqWithASCIIFallback
 {
-    static bool prior(HuffTree<E> *t1, HuffTree<E> *t2)
+    bool operator()(HuffTree<E> *t1, HuffTree<E> *t2) const
     {
-        return t1->root()->weight() < t2->root()->weight();
+        if (t1->root()->weight() != t2->root()->weight())
+            return t1->root()->weight() < t2->root()->weight();
+        else
+        {
+            // if both is leaf node, compare content by data
+            if (t1->root()->isLeaf() && t2->root()->isLeaf())
+            {
+                auto l1 = dynamic_cast<LeafNode<E> *>(t1->root());
+                auto l2 = dynamic_cast<LeafNode<E> *>(t2->root());
+                return l1->val() < l2->val();
+            }
+            // else both node is considered equiv
+            else
+                return false;
+        }
     }
 };
 
 // Build a Huffman tree from a collection of frequencies
 template <typename E>
-HuffTree<E> *buildHuff(HuffTree<E> **TreeArray, int count)
+HuffTree<E> *buildHuff(const std::vector<HuffTree<E> *> treeList)
 {
-    heap<HuffTree<E> *, minTreeComp<E>> forest(TreeArray, count, count);
+    QueueLFCO<HuffTree<E> *, CompareTreeByFreqWithASCIIFallback<E>> forest(treeList);
 
     HuffTree<char> *temp1, *temp2, *temp3;
-    if (count > 0)
-        temp3 = TreeArray[0];
+    if (treeList.size() > 0)
+        temp3 = treeList.front();
 
     while (forest.size() > 1)
     {
-        temp1 = forest.removefirst();
-        temp2 = forest.removefirst();
+        temp1 = forest.peek();
+        forest.pop();
+        temp2 = forest.peek();
+        forest.pop();
         temp3 = new HuffTree<E>(temp1, temp2);
 
-        forest.insert(temp3);  // Put the new tree back on list
+        forest.push(temp3);  // Put the new tree back on list
 
         delete temp1;
         delete temp2;

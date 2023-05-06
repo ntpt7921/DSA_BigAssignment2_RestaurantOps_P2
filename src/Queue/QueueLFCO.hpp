@@ -5,6 +5,7 @@
 #include <cstdint>
 #include <iterator>
 #include <utility>
+#include <vector>
 
 using _QueueLFCOInsertOrder = uint_fast32_t;
 
@@ -44,6 +45,7 @@ protected:
 
 public:
     QueueLFCO();
+    QueueLFCO(const std::vector<T> &elemList);
     ~QueueLFCO();
 
     bool contains(const T &item) const;
@@ -62,6 +64,15 @@ QueueLFCO<T, Compare>::QueueLFCO()
     : Heap<std::pair<_QueueLFCOInsertOrder, T>, CompareWithOrderFallback<T, Compare>>(),
       insertOrderCount(0)
 {
+}
+
+template <typename T, typename Compare>
+QueueLFCO<T, Compare>::QueueLFCO(const std::vector<T> &elemList)
+    : Heap<std::pair<_QueueLFCOInsertOrder, T>, CompareWithOrderFallback<T, Compare>>(),
+      insertOrderCount(0)
+{
+    for (const T &elem : elemList)
+        push(elem);
 }
 
 template <typename T, typename Compare>
