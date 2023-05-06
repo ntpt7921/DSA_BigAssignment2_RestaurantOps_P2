@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <functional>
 #include <iostream>
 #include <queue>
 
@@ -129,6 +130,7 @@ public:
     void insert(const K &key, const T &value);
     void remove(const K &key);
     void clear();
+    void print(std::function<void(const T &)> printFunction);
 };
 
 template <typename K, typename T>
@@ -634,6 +636,28 @@ void AVLTree<K, T>::clear()
         return;
 
     clearRecursive(this->root);
+}
+
+template <typename K, typename T>
+void AVLTree<K, T>::print(std::function<void(const T &)> printFunction)
+{
+    if (root == nullptr)
+        return;
+    // traverse breadth first through the tree, calling printFunction on each node
+    std::queue<Node *> q;
+    q.push(root);
+
+    while (!q.empty())
+    {
+        Node *curr = q.front();
+        q.pop();
+        if (curr->pLeft != nullptr)
+            q.push(curr->pLeft);
+        if (curr->pRight != nullptr)
+            q.push(curr->pRight);
+
+        printFunction(curr->data);
+    }
 }
 
 #endif  // AVLTREE_HPP

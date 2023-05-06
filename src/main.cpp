@@ -6,7 +6,8 @@
 #include "Queue/QueueLFCO.hpp"
 #include "Queue/QueueLRCO.hpp"
 
-#include "HuffmanCoding/TestHuffmanCoding.hpp"
+#include "AVL/TestAVL.hpp"
+#include "HashTable/TestHashTable.hpp"
 #include "Queue/TestQueue.hpp"
 
 int main()
@@ -14,9 +15,9 @@ int main()
     /* std::string fileName = "test.txt"; */
     /* simulate(fileName); */
 
-    TestQueue::QueueLFCO::test();
-    TestHuffmanCoding::HuffTree::test();
-    TestHuffmanCoding::HuffmanTreeWrapper::test();
+    AVLTest::printTest();
+    TestHashTable::StaticHashTable::testPrint();
+    TestQueue::QueueLFCO::testPrint();
 
     return 0;
 }

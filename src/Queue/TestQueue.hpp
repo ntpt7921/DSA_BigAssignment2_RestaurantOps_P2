@@ -119,6 +119,7 @@ void testVectorElemListConstructor();
 void testDistinctElement();
 void testAllEquivElement();
 void testResetCounter();
+void testPrint();
 void test();
 
 };  // namespace QueueLFCO

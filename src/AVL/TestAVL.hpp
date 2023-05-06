@@ -29,6 +29,7 @@ void testRemove();
 
 void shortTest();
 void longTest();
+void printTest();
 
 };  // namespace AVLTest
 

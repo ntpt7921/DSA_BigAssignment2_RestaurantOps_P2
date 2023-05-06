@@ -2,7 +2,9 @@
 #define QUEUE_QUEUELFCO_HPP
 
 #include "Queue/Heap.hpp"
+#include <cstddef>
 #include <cstdint>
+#include <functional>
 #include <iterator>
 #include <utility>
 #include <vector>
@@ -42,6 +44,7 @@ protected:
     _QueueLFCOInsertOrder
         insertOrderCount;  // count the number of insert (push) into the queue; this value is reset
                            // when heap is empty, making it harder for this value to overflow
+    void printRecurisve(std::size_t currIndex, const std::function<void(const T &)> &printFunction);
 
 public:
     QueueLFCO();
@@ -57,6 +60,7 @@ public:
     void pop();
     void remove(const T &item);
     void clear();
+    void print(std::function<void(const T &)> printFunction);
 };
 
 template <typename T, typename Compare>
@@ -145,6 +149,27 @@ void QueueLFCO<T, Compare>::clear()
 {
     Heap<std::pair<_QueueLFCOInsertOrder, T>, CompareWithOrderFallback<T, Compare>>::clear();
     this->insertOrderCount = 0;
+}
+
+template <typename T, typename Compare>
+void QueueLFCO<T, Compare>::printRecurisve(std::size_t currIndex,
+                                           const std::function<void(const T &)> &printFunction)
+{
+    if (currIndex >= this->arr.size())
+        return;
+
+    printFunction(this->arr[currIndex].second);
+    printRecurisve(2 * currIndex + 1, printFunction);
+    printRecurisve(2 * currIndex + 2, printFunction);
+}
+
+template <typename T, typename Compare>
+void QueueLFCO<T, Compare>::print(std::function<void(const T &)> printFunction)
+{
+    if (this->empty())
+        return;
+    else
+        printRecurisve(0, printFunction);
 }
 
 #endif  // !QUEUE_QUEUELFCO_HPP

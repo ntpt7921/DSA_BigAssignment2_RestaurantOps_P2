@@ -117,3 +117,14 @@ void AVLTest::longTest()
     AVLTest::testInsert_withRandomPattern(30000, 127, 0, 1000);
     AVLTest::testRemove_withRandomPattern(30000, 127, 0, 1000);
 }
+
+void AVLTest::printTest()
+{
+    AVLTree<int, int> testObject;
+    for (int i = 0; i < 10; i++)
+        testObject.insert(i, i);
+
+    testObject.printTreeStructure();
+    testObject.print([](const int &elem) { std::cout << elem << ' '; });
+    std::cout << '\n';
+}

@@ -1,6 +1,7 @@
 #include "HashTable/TestHashTable.hpp"
 #include "HashTable/StaticHashTable.hpp"
 #include <cassert>
+#include <iostream>
 
 void TestHashTable::StaticHashTable::testInsert()
 {
@@ -48,6 +49,17 @@ void TestHashTable::StaticHashTable::testInsertAfterFull()
     assert(testObject.add(0, 0));
     assert(testObject.add(0, 1));
     assert(!testObject.add(0, 2));
+}
+
+void TestHashTable::StaticHashTable::testPrint()
+{
+    ::StaticHashTable<int, 4> testObject;
+
+    testObject.add(0, 0);
+    testObject.add(3, 3);
+    testObject.add(3, 1);
+    testObject.print([](const int &elem) { std::cout << elem << ' '; });
+    std::cout << '\n';
 }
 
 void TestHashTable::StaticHashTable::testAll()

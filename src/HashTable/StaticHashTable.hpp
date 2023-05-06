@@ -4,6 +4,7 @@
 #include <array>
 #include <cassert>
 #include <cstddef>
+#include <functional>
 
 template <typename T, std::size_t N>
 class StaticHashTable
@@ -23,6 +24,7 @@ public:
     bool add(std::size_t key, const T &value);
     bool emptyAt(std::size_t key) const;
     T &operator[](std::size_t key);
+    void print(std::function<void(const T &)> printFunction);
 };
 
 template <typename T, std::size_t N>
@@ -76,6 +78,14 @@ T &StaticHashTable<T, N>::operator[](std::size_t key)
 {
     assert(key < N && "Key is not in range");
     return arr[key].second;
+}
+
+template <typename T, std::size_t N>
+void StaticHashTable<T, N>::print(std::function<void(const T &)> printFunction)
+{
+    for (const auto &elem : this->arr)
+        if (elem.first)
+            printFunction(elem.second);
 }
 
 #endif  // !HASHTABLE_HASHTABLE_HPP

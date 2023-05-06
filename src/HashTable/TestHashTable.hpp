@@ -10,6 +10,7 @@ namespace StaticHashTable
 void testInsert();
 void testInsertWithCollision();
 void testInsertAfterFull();
+void testPrint();
 void testAll();
 
 };  // namespace StaticHashTable

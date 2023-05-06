@@ -199,6 +199,16 @@ void TestQueue::QueueLFCO::testResetCounter()
     testObject.clear();
 }
 
+void TestQueue::QueueLFCO::testPrint()
+{
+    WrappedQueuLFCOForTest<int, std::less<>> testObject;
+    for (int i = 0; i < 10; i++)
+        testObject.push(i);
+    testObject.printValue();
+    testObject.print([](const int &elem) { std::cout << elem << ' '; });
+    std::cout << '\n';
+}
+
 void TestQueue::QueueLFCO::test()
 {
     testDistinctElement();
