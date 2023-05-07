@@ -9,30 +9,30 @@ class QueueLRCO : public QueueFIFO<T>
 {
 public:
     // move the element to the end of the list
-    void renew(typename QueueFIFO<T>::iterator iter);
-    void renew(typename QueueFIFO<T>::const_iterator citer);
+    typename QueueFIFO<T>::iterator renew(typename QueueFIFO<T>::iterator iter);
+    typename QueueFIFO<T>::iterator renew(typename QueueFIFO<T>::const_iterator citer);
 };
 
 template <typename T>
-void QueueLRCO<T>::renew(typename QueueFIFO<T>::iterator iter)
+typename QueueFIFO<T>::iterator QueueLRCO<T>::renew(typename QueueFIFO<T>::iterator iter)
 {
-    auto nextIter = std::next(iter);
-    if (nextIter == this->end())
-        return;
+    if (std::next(iter) == this->end())
+        return this->end();
 
     this->push_back(*iter);
     this->erase(iter);
+    return std::prev(this->end());
 }
 
 template <typename T>
-void QueueLRCO<T>::renew(typename QueueFIFO<T>::const_iterator citer)
+typename QueueFIFO<T>::iterator QueueLRCO<T>::renew(typename QueueFIFO<T>::const_iterator citer)
 {
-    auto nextCiter = std::next(citer);
-    if (nextCiter == this->cend())
-        return;
+    if (std::next(citer) == this->cend())
+        return this->end();
 
     this->push_back(*citer);
     this->erase(citer);
+    return std::prev(this->end());
 }
 
 #endif  // !QUEUE_QUEUELRCO_HPP

@@ -120,6 +120,7 @@ void testDistinctElement();
 void testAllEquivElement();
 void testResetCounter();
 void testPrint();
+void testRenew();
 void test();
 
 };  // namespace QueueLFCO

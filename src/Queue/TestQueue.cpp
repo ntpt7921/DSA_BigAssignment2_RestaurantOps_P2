@@ -205,13 +205,30 @@ void TestQueue::QueueLFCO::testPrint()
     for (int i = 0; i < 10; i++)
         testObject.push(i);
     testObject.printValue();
-    testObject.print([](const int &elem) { std::cout << elem << ' '; });
+    testObject.forEach([](const int &elem) { std::cout << elem << ' '; });
     std::cout << '\n';
+}
+
+void TestQueue::QueueLFCO::testRenew()
+{
+    WrappedQueuLFCOForTest<int, std::less<>> testObject;
+    for (int i = 0; i < 10; i++)
+        testObject.push(i);
+
+    testObject.renew(0);
+    testObject.renew(1);
+    testObject.renew(2);
+    testObject.renew(3);
+    testObject.renew(4);
+    testObject.printValue();
 }
 
 void TestQueue::QueueLFCO::test()
 {
+    /* testVectorElemListConstructor(); */
     testDistinctElement();
     testAllEquivElement();
+    testResetCounter();
+    /* testRenew(); */
     testResetCounter();
 }

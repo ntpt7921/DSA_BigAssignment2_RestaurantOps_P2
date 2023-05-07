@@ -1,5 +1,6 @@
 #include "AVL/TestAVL.hpp"
 #include <algorithm>
+#include <cassert>
 #include <iostream>
 #include <random>
 
@@ -118,6 +119,21 @@ void AVLTest::longTest()
     AVLTest::testRemove_withRandomPattern(30000, 127, 0, 1000);
 }
 
+void AVLTest::sizeTest()
+{
+    AVLTree<int, int> testObject;
+    for (int i = 0; i < 10; i++)
+        testObject.insert(i, i);
+    assert(testObject.size() == 10);
+
+    testObject.remove(0);
+    testObject.remove(4);
+    assert(testObject.size() == 8);
+
+    testObject.clear();
+    /* assert(testObject.size() == 0); */
+}
+
 void AVLTest::printTest()
 {
     AVLTree<int, int> testObject;
@@ -125,6 +141,6 @@ void AVLTest::printTest()
         testObject.insert(i, i);
 
     testObject.printTreeStructure();
-    testObject.print([](const int &elem) { std::cout << elem << ' '; });
+    testObject.forEach([](const int &elem) { std::cout << elem << ' '; });
     std::cout << '\n';
 }

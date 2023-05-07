@@ -3,6 +3,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <cstddef>
 #include <functional>
 #include <iostream>
 #include <queue>
@@ -86,6 +87,7 @@ public:
 
 private:
     Node *root;
+    std::size_t count;
 
 protected:
     int getHeightRec(Node *node)
@@ -119,7 +121,7 @@ protected:
     void clearRecursive(Node *curr);
 
 public:
-    AVLTree() : root(nullptr) { }
+    AVLTree() : root(nullptr), count(0) { }
 
     ~AVLTree() { clear(); }
 
@@ -130,7 +132,9 @@ public:
     void insert(const K &key, const T &value);
     void remove(const K &key);
     void clear();
-    void print(std::function<void(const T &)> printFunction);
+    void forEach(std::function<void(const T &)> printFunction);
+
+    std::size_t size() const { return count; }
 };
 
 template <typename K, typename T>
@@ -390,11 +394,13 @@ void AVLTree<K, T>::insert(const K &key, const T &value)
     if (this->root == nullptr)
     {
         this->root = new Node(key, value);
+        count++;
         return;
     }
 
     bool hasBecomesHigher = false;
     insertRecursive(&root, key, value, hasBecomesHigher);
+    count++;
 }
 
 template <typename K, typename T>
@@ -584,7 +590,7 @@ typename AVLTree<K, T>::Node *AVLTree<K, T>::removeRecursive(Node **curr, const 
             (*curr)->data = replaceWith->data;
 
             // remove replaceWith from the tree, will always succeed
-            (*curr)->pRight = removeRecursive(&((*curr)->pRight), replaceWith->data,
+            (*curr)->pRight = removeRecursive(&((*curr)->pRight), replaceWith->key,
                                               hasBecomesShorter, successDelete);
             if (hasBecomesShorter)
             {
@@ -616,6 +622,9 @@ void AVLTree<K, T>::remove(const K &key)
 
     bool hasBecomesShorter = false, successDelete = false;
     this->root = removeRecursive(&(this->root), key, hasBecomesShorter, successDelete);
+
+    if (successDelete)
+        count--;
 }
 
 template <typename K, typename T>
@@ -636,27 +645,39 @@ void AVLTree<K, T>::clear()
         return;
 
     clearRecursive(this->root);
+    this->root = nullptr;
+    count = 0;
 }
 
 template <typename K, typename T>
-void AVLTree<K, T>::print(std::function<void(const T &)> printFunction)
+void AVLTree<K, T>::forEach(std::function<void(const T &)> func)
 {
     if (root == nullptr)
         return;
-    // traverse breadth first through the tree, calling printFunction on each node
-    std::queue<Node *> q;
-    q.push(root);
 
-    while (!q.empty())
+    // traverse breadth first through the tree, storing visited node into a queue
+    // then go through that queue one by one
+    std::queue<Node *> bfQueue;
+    std::queue<Node *> elemQueue;
+    bfQueue.push(root);
+
+    while (!bfQueue.empty())
     {
-        Node *curr = q.front();
-        q.pop();
+        Node *curr = bfQueue.front();
+        bfQueue.pop();
         if (curr->pLeft != nullptr)
-            q.push(curr->pLeft);
+            bfQueue.push(curr->pLeft);
         if (curr->pRight != nullptr)
-            q.push(curr->pRight);
+            bfQueue.push(curr->pRight);
 
-        printFunction(curr->data);
+        elemQueue.push(curr);
+    }
+
+    while (!elemQueue.empty())
+    {
+        Node *curr = elemQueue.front();
+        elemQueue.pop();
+        func(curr->data);
     }
 }
 

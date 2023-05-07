@@ -11,8 +11,8 @@ struct CustomerRecord
 {
     enum class TableArea
     {
-        OCEAN_SIDE = 1,
-        MOUNTAIN_SIDE = 2,
+        SECTION_1 = 1,
+        SECTION_2 = 2,
     };
     using CustomerID = uint_fast16_t;
     using TableID = uint_fast16_t;
@@ -25,8 +25,8 @@ struct CustomerRecord
 
     QueueFIFO<CustomerRecord *>::iterator placeInQueueFIFO;
     QueueLRCO<CustomerRecord *>::iterator placeInQueueLRCO;
-    // LFCO implementation (heap) don't allow for constant time deletion, so no pointer is store for
-    // this structure
+    // LFCO implementation (heap) don't allow for constant time deletion, so no pointer is stored
+    // for this structure
 };
 
 #endif  // !CUSTOMER_RECORD_HPP

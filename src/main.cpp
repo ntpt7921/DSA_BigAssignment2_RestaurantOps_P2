@@ -1,23 +1,27 @@
 #include "main.h"
-#include "AVL/AVLTree.hpp"
-#include "HashTable/StaticHashTable.hpp"
-#include "HuffmanCoding/HuffmanTreeWrapper.hpp"
-#include "Queue/QueueFIFO.hpp"
-#include "Queue/QueueLFCO.hpp"
-#include "Queue/QueueLRCO.hpp"
 
-#include "AVL/TestAVL.hpp"
-#include "HashTable/TestHashTable.hpp"
-#include "Queue/TestQueue.hpp"
+#include "CommandParser/Command.hpp"
+#include "CommandParser/CommandParser.hpp"
+#include "Restaurant/Restaurant.hpp"
+#include <string>
 
-int main()
+int main(int argc, char *argv[])
 {
     /* std::string fileName = "test.txt"; */
     /* simulate(fileName); */
 
-    AVLTest::printTest();
-    TestHashTable::StaticHashTable::testPrint();
-    TestQueue::QueueLFCO::testPrint();
+    for (int i = 0; i < argc; i++)
+    {
+        std::string fileName = argv[i];
+        CommandParser reader(fileName);
+        Restaurant restaurant;
+
+        while (reader.canContinueReading())
+        {
+            Command currCommand = reader.readNextCommand();
+            restaurant.processCommand(currCommand);
+        }
+    }
 
     return 0;
 }

@@ -21,10 +21,11 @@ public:
 
     size_type size() const;
 
-    bool add(std::size_t key, const T &value);
+    bool insert(std::size_t key, const T &value);
+    void remove(std::size_t key);
     bool emptyAt(std::size_t key) const;
     T &operator[](std::size_t key);
-    void print(std::function<void(const T &)> printFunction);
+    void forEach(std::function<void(const T &)> printFunction);
 };
 
 template <typename T, std::size_t N>
@@ -44,7 +45,7 @@ typename StaticHashTable<T, N>::size_type StaticHashTable<T, N>::size() const
 }
 
 template <typename T, std::size_t N>
-bool StaticHashTable<T, N>::add(std::size_t key, const T &value)
+bool StaticHashTable<T, N>::insert(std::size_t key, const T &value)
 {
     assert(key < N && "Key is not in range");
 
@@ -67,6 +68,14 @@ bool StaticHashTable<T, N>::add(std::size_t key, const T &value)
 }
 
 template <typename T, std::size_t N>
+void StaticHashTable<T, N>::remove(std::size_t key)
+{
+    assert(key < N && "Key is not in range");
+    arr[key].first = false;
+    occupiedCount--;
+}
+
+template <typename T, std::size_t N>
 bool StaticHashTable<T, N>::emptyAt(std::size_t key) const
 {
     assert(key < N && "Key is not in range");
@@ -81,11 +90,11 @@ T &StaticHashTable<T, N>::operator[](std::size_t key)
 }
 
 template <typename T, std::size_t N>
-void StaticHashTable<T, N>::print(std::function<void(const T &)> printFunction)
+void StaticHashTable<T, N>::forEach(std::function<void(const T &)> func)
 {
     for (const auto &elem : this->arr)
         if (elem.first)
-            printFunction(elem.second);
+            func(elem.second);
 }
 
 #endif  // !HASHTABLE_HASHTABLE_HPP

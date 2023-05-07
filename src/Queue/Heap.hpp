@@ -15,6 +15,9 @@ protected:
 
     bool equiv(const T &a, const T &b) { return !comp(a, b) && !comp(b, a); }
 
+    typename std::vector<T>::iterator reheapUp(typename std::vector<T>::iterator at);
+    typename std::vector<T>::iterator reheapDown(typename std::vector<T>::iterator at);
+
 public:
     Heap();
     ~Heap();
@@ -30,9 +33,6 @@ public:
     void pop();
     void remove(const T &item);
     void clear();
-
-    void reheapUp(typename std::vector<T>::iterator at);
-    void reheapDown(typename std::vector<T>::iterator at);
 };
 
 template <typename T, typename Compare>
@@ -119,7 +119,7 @@ void Heap<T, Compare>::clear()
 }
 
 template <typename T, typename Compare>
-void Heap<T, Compare>::reheapUp(typename std::vector<T>::iterator at)
+typename std::vector<T>::iterator Heap<T, Compare>::reheapUp(typename std::vector<T>::iterator at)
 {
     auto currIndex = at - arr.begin();
     auto parentIndex = (currIndex - 1) / 2;
@@ -136,10 +136,11 @@ void Heap<T, Compare>::reheapUp(typename std::vector<T>::iterator at)
         currIndex = parentIndex;
     }
     arr[currIndex] = temp;
+    return std::next(arr.begin(), currIndex);
 }
 
 template <typename T, typename Compare>
-void Heap<T, Compare>::reheapDown(typename std::vector<T>::iterator at)
+typename std::vector<T>::iterator Heap<T, Compare>::reheapDown(typename std::vector<T>::iterator at)
 {
     auto currIndex = static_cast<typename std::vector<T>::size_type>(at - arr.begin());
     auto size = arr.size();
@@ -170,6 +171,7 @@ void Heap<T, Compare>::reheapDown(typename std::vector<T>::iterator at)
     }
 
     arr[currIndex] = temp;
+    return std::next(arr.begin(), currIndex);
 }
 
 #endif

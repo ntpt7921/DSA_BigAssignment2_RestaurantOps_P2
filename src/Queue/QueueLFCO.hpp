@@ -2,6 +2,7 @@
 #define QUEUE_QUEUELFCO_HPP
 
 #include "Queue/Heap.hpp"
+#include <algorithm>
 #include <cstddef>
 #include <cstdint>
 #include <functional>
@@ -44,7 +45,8 @@ protected:
     _QueueLFCOInsertOrder
         insertOrderCount;  // count the number of insert (push) into the queue; this value is reset
                            // when heap is empty, making it harder for this value to overflow
-    void printRecurisve(std::size_t currIndex, const std::function<void(const T &)> &printFunction);
+    void forEachRecursive(std::size_t currIndex,
+                          const std::function<void(const T &)> &printFunction);
 
 public:
     QueueLFCO();
@@ -60,7 +62,8 @@ public:
     void pop();
     void remove(const T &item);
     void clear();
-    void print(std::function<void(const T &)> printFunction);
+    void forEach(std::function<void(const T &)> printFunction);
+    void renew(const T &elem);
 };
 
 template <typename T, typename Compare>
@@ -152,24 +155,37 @@ void QueueLFCO<T, Compare>::clear()
 }
 
 template <typename T, typename Compare>
-void QueueLFCO<T, Compare>::printRecurisve(std::size_t currIndex,
-                                           const std::function<void(const T &)> &printFunction)
+void QueueLFCO<T, Compare>::forEachRecursive(std::size_t currIndex,
+                                             const std::function<void(const T &)> &func)
 {
     if (currIndex >= this->arr.size())
         return;
 
-    printFunction(this->arr[currIndex].second);
-    printRecurisve(2 * currIndex + 1, printFunction);
-    printRecurisve(2 * currIndex + 2, printFunction);
+    func(this->arr[currIndex].second);
+    forEachRecursive(2 * currIndex + 1, func);
+    forEachRecursive(2 * currIndex + 2, func);
 }
 
 template <typename T, typename Compare>
-void QueueLFCO<T, Compare>::print(std::function<void(const T &)> printFunction)
+void QueueLFCO<T, Compare>::forEach(std::function<void(const T &)> func)
 {
     if (this->empty())
         return;
     else
-        printRecurisve(0, printFunction);
+        forEachRecursive(0, func);
+}
+
+template <typename T, typename Compare>
+void QueueLFCO<T, Compare>::renew(const T &elem)
+{
+    auto hasElementWithinPair = [&](const std::pair<_QueueLFCOInsertOrder, T> &p) -> bool
+    { return (elem == p.second); };
+
+    auto foundAt = std::find_if(this->arr.begin(), this->arr.end(), hasElementWithinPair);
+    if (foundAt == this->arr.end())
+        return;
+    foundAt = this->reheapUp(foundAt);
+    this->reheapDown(foundAt);
 }
 
 #endif  // !QUEUE_QUEUELFCO_HPP
